@@ -1,0 +1,23 @@
+name: .NET Framework
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+    - name: Restore packages
+      run: nuget restore BankAccountWithTest.sln
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+    - name: Build with MSBuild
+      run: msbuild BankAccountWithTest.sln -p:Configuration=Release
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v2
+    - name: VSTest
+      run: vstest.console BankAccountWithTest.Tests\bin\Release\BankAccountWithTest.Tests.dll
