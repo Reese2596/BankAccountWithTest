@@ -11,7 +11,12 @@ namespace BankAccountWithTest.Tests
     [TestClass()]
     public class BankAccountTests
     {
+        ///RED: create test
+        ///Green: create code that pass at any cost
+        ///Refactor: clean up and refractor code
+
         [TestMethod]
+        [TestCategory("Constructor")]
         #region Constructor Values
         [DataRow("a")]
         [DataRow("ABC123")]
@@ -28,6 +33,7 @@ namespace BankAccountWithTest.Tests
         }
 
         [TestMethod]
+        [TestCategory("Constructor")]
         #region Constructor Values
         [DataRow(null)]
         [DataRow("")]
@@ -41,6 +47,7 @@ namespace BankAccountWithTest.Tests
         }
 
         [TestMethod()]
+        [TestCategory("Deposit")]
         public void Deposit_PositiveValue_AddsToBalance()
         {
             //Arrange: Get objects and variables set up.
@@ -56,6 +63,7 @@ namespace BankAccountWithTest.Tests
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
         public void Deposit_PositiveAmountWithCents_AddsToBalance()
         {
             //Arrange
@@ -71,6 +79,7 @@ namespace BankAccountWithTest.Tests
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
         #region Deposit Amounts
         [DataRow(100)]
         [DataRow(99.99)]
@@ -94,6 +103,8 @@ namespace BankAccountWithTest.Tests
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
+        [Priority(2)]
         #region Deposit Amounts
         [DataRow(-1)]
         [DataRow(-100)]
@@ -109,5 +120,49 @@ namespace BankAccountWithTest.Tests
             //Assert => Act
             Assert.ThrowsException<ArgumentException>(() => acc.Deposit(depositAmt));
         }
+
+        [TestMethod]
+        [TestCategory("Deposit")]
+        [Priority(1)]
+        public void Deposit_MultiplePositiveAmounts_AddsToBalance()
+        {
+            //Arrange
+            BankAccount acc = new BankAccount("123");
+            double amt1 = 300.00;
+            double amt2 = 99.99;
+
+            //Act
+            acc.Deposit(amt1);
+            Assert.AreEqual(amt1, acc.Balance);
+
+            acc.Deposit(amt2);
+            Assert.AreEqual(amt1 + amt2, acc.Balance);
+        }
+
+        [TestMethod]
+        [TestCategory("Withdrawal")]
+        #region Deposit Amounts
+        [DataRow(1)]
+        [DataRow(100)]
+        [DataRow(99.99)]
+        [DataRow(9.75)]
+        [DataRow(0.01)]
+        #endregion
+        public void Withdraw_PositiveAmount_RemovesFromBalance(double withdrawAmount)
+        {
+            //Arrange
+            string accountNumber = "123";
+            double initialBalance = 100;
+            BankAccount acc = new BankAccount(accountNumber, initialBalance);    //Second Parameter is initial value 
+            double expectedBalance = initialBalance - withdrawAmount;
+            
+            //Act
+            acc.Withdraw(withdrawAmount);
+
+            //Assert            
+            Assert.AreEqual(expectedBalance, acc.Balance);
+        }
+
+
     }
 }

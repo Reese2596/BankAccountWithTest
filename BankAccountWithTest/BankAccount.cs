@@ -30,9 +30,12 @@ namespace BankAccountWithTest
 
         public double Balance { get; private set; }
 
-        public BankAccount(string accNum)
+        public BankAccount(string accNum):this(accNum, 0){ }
+
+        public BankAccount(string accountNumber, double initialBalance)
         {
-            AccountNumber = accNum;
+            AccountNumber = accountNumber;
+            Balance = initialBalance;
         }
 
         /// <summary>
@@ -51,5 +54,12 @@ namespace BankAccountWithTest
             Balance += amt;
             return Balance;
         }
+
+        public void Withdraw(double withdrawAmount)
+        {
+            Balance -= withdrawAmount;
+        }
+
+
     }
 }
